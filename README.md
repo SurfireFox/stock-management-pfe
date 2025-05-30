@@ -1,8 +1,8 @@
-# YouShope - Application E-commerce
+# Stock Management PFE - Application E-commerce
 ## Contexte du projet
 
 
-YouShope est une application e-commerce développée avec Laravel 9 et PHP 8. Ce projet vise à fournir une plateforme complète de gestion de produits, de paniers, de commandes et de paiements en ligne.
+Stock Management PFE est une application e-commerce développée avec Laravel 9 et PHP 8. Ce projet vise à fournir une plateforme complète de gestion de produits, de paniers, de commandes et de paiements en ligne.
 
 -  implémenter l’authentification avec Laravel  Breeze.
 - Gérer les rôles et permissions pour restreindre l’accès aux fonctionnalités.
@@ -40,13 +40,13 @@ ___\User.php
 
 Cloner le projet
 ```git clone 
-https://github.com/zakaria-123kardache/YouShope.git
+https://github.com/zakaria-123kardache/Stock Management PFE.git
 ```
 
 Accéder au dossier du projet ...
 
 ```
-cd Youshope
+cd Stock Management PFE
 ```
 Installer les dépendances  ...
 
@@ -65,7 +65,7 @@ Modifier .env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=youshope
+DB_DATABASE=Stock Management PFE
 DB_USERNAME=root
 DB_PASSWORD=
 ```
