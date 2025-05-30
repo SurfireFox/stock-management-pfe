@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Youshop - Shop</title>
+  <title>Stock-Management-MedHK - Shop</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
   <style>
@@ -76,13 +76,24 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="/shop">Shop</a></li>
-          <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="/panier"><i class="fa fa-shopping-bag"></i></a></li>
-        </ul>
+    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+    <li class="nav-item"><a class="nav-link" href="/panier"><i class="fa fa-shopping-bag"></i></a></li>
+    @guest
+      <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+    @else
+      <li class="nav-item">
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button class="nav-link btn btn-link" type="submit">Logout</button>
+        </form>
+      </li>
+    @endguest
+</ul>
+
       </div>
     </div>
   </nav>
@@ -138,7 +149,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Stock-Managment-MedHK. All rights reserved.</p>
+    <p>&copy; 2025 Stock-Management-MedHK. All rights reserved.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

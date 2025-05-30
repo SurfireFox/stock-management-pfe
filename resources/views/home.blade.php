@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Youshop</title>
+  <title>Stock-Management-MedHK</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -48,18 +48,29 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">Stock-Managment-MedHK</a>
+      <a class="navbar-brand" href="#">Stock-Management-MedHK</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-        </ul>
+    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+    @guest
+      <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+    @else
+      <li class="nav-item">
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button class="nav-link btn btn-link" type="submit">Logout</button>
+        </form>
+      </li>
+    @endguest
+</ul>
+
       </div>
     </div>
   </nav>
@@ -101,26 +112,9 @@
       @endforeach
     </div>
   </section>
-
-  <!-- Newsletter -->
-  <section class="bg-light py-5 text-center">
-    <h4>Sign Up for Newsletters</h4>
-    <p>Get the latest updates and offers</p>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Your email address">
-            <button class="btn btn-primary">Sign Up</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Stock-Managment-MedHK. All rights reserved.</p>
+    <p>&copy; 2025 Stock-Management-MedHK. All rights reserved.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

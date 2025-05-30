@@ -1,102 +1,137 @@
-const bar = document.getElementById('bar');
-const close = document.getElementById('close');
-const nav = document.getElementById('navbar');
+// ==============================
+// Navbar Toggle
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+    const bar = document.getElementById('bar');
+    const close = document.getElementById('close');
+    const nav = document.getElementById('navbar');
 
-if (bar) {
-    bar.addEventListener('click', () => {
-        nav.classList.add('active');
-    })
-}
-if (close) {
-    close.addEventListener('click', () => {
-        nav.classList.remove('active');
-    })
-}
-
-/* Bottom to Top button */
-
-const toTop = document.querySelector(".to-top");
-
-window.addEventListener("scroll", () => {
-    if (window.pageYOffset > 100) {
-        toTop.classList.add("active");
-    } else {
-        toTop.classList.remove("active");
+    if (bar) {
+        bar.addEventListener('click', () => nav.classList.add('active'));
     }
-})
 
+    if (close) {
+        close.addEventListener('click', () => nav.classList.remove('active'));
+    }
 
-// LocalStg ProduitDeai
+    // Scroll-to-top Button
+    const toTop = document.querySelector(".to-top");
+    window.addEventListener("scroll", () => {
+        if (window.pageYOffset > 100) {
+            toTop?.classList.add("active");
+        } else {
+            toTop?.classList.remove("active");
+        }
+    });
 
-const productId = "{{ $produit->id }}";
-const productName = "{{ $produit->name }}";
-const productPrice = "{{ $produit->prix }}";
-const productPhoto = "{{ asset($produit->photo) }}";
+    afficherPanier();
+});
 
+// ==============================
+// Cart Functionality
+// ==============================
+
+// Add product to cart
 function ajouterAuPanier(id, name, prix, photo, quantite) {
-    let produit = {
-        id: id,
-        name: name,
-        prix: prix,
-        photo: photo,
+    const produit = {
+        id,
+        name,
+        prix,
+        photo,
         quantite: parseInt(quantite)
     };
 
-    let panier = JSON.parse(localStorage.getItem("panier")) || [];;
-    panier.push(produit);
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+
+    // Check if already in cart and update quantity
+    const index = panier.findIndex(p => p.id === id);
+    if (index !== -1) {
+        panier[index].quantite += produit.quantite;
+    } else {
+        panier.push(produit);
+    }
+
     localStorage.setItem("panier", JSON.stringify(panier));
+    alert("Produit ajouté au panier !");
+    afficherPanier();
 }
 
+// Make the function available globally for HTML event handlers
+window.ajouterAuPanier = ajouterAuPanier;
 
-// localstrorig paier 
-let grandTotal = 0;
-
+// Display cart items
 function afficherPanier() {
+    const panierTable = document.getElementById("panier-items");
+    const totalPriceEl = document.querySelector(".total-price td:last-child");
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+    let grandTotal = 0;
 
-    let panierTable = document.getElementById("panier-items");
-    let panier = JSON.parse(localStorage.getItem("panier"));
+    if (!panierTable) return;
 
     panierTable.innerHTML = "";
 
-    panier.forEach((produit) => {
-        let itemTotal = (parseFloat(produit.prix) * produit.quantite);
+    panier.forEach(produit => {
+        const itemTotal = parseFloat(produit.prix) * produit.quantite;
         grandTotal += itemTotal;
-        let row = `
+
+        const row = `
             <tr>
                 <td>
                     <div class="cart-info">
                         <img src="${produit.photo}" alt="${produit.name}" width="50">
                         <div>
                             <p>${produit.name}</p>
-                            <small>prix: ${produit.prix}$</small>
+                            <small>Prix: ${produit.prix}$</small>
                             <br/>
-                             <a href="#" onclick="removeProduit('${produit.id}'); return false;">remove</a>
+                            <a href="#" onclick="removeProduit('${produit.id}'); return false;">Supprimer</a>
                         </div>
                     </div>
                 </td>
-                <td><input type="number" value="${produit.quantite}" min="1"></td>
-                <td>${itemTotal}$</td>
+                <td><input type="number" value="${produit.quantite}" min="1" onchange="updateQuantite('${produit.id}', this.value)"></td>
+                <td>${itemTotal.toFixed(2)}$</td>
             </tr>
         `;
+
         panierTable.innerHTML += row;
-        document.querySelector('.total-price td:last-child').innerHTML = `${grandTotal}$`;
     });
 
+    if (totalPriceEl) {
+        totalPriceEl.innerHTML = `${grandTotal.toFixed(2)}$`;
+    }
 }
 
-function removeProduit(produitId) {
-    let panier = JSON.parse(localStorage.getItem("panier"));
-    panier = panier.filter((produit) => produit.id !== produitId);
+// Update quantity
+function updateQuantite(id, quantite) {
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+    const index = panier.findIndex(p => p.id === id);
+    if (index !== -1) {
+        panier[index].quantite = parseInt(quantite);
+        localStorage.setItem("panier", JSON.stringify(panier));
+        afficherPanier();
+    }
+}
+
+// Remove product
+function removeProduit(id) {
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+    panier = panier.filter(p => p.id !== id);
     localStorage.setItem("panier", JSON.stringify(panier));
     afficherPanier();
 }
-document.addEventListener("DOMContentLoaded", afficherPanier);
 
-
+// ==============================
+// Checkout Function
+// ==============================
 function validerCommande() {
-    let panier = JSON.parse(localStorage.getItem("panier"));
+    const panier = JSON.parse(localStorage.getItem("panier")) || [];
+
     if (panier.length === 0) {
-        alert("Panier vide");
+        // Display a user-friendly message instead of alert
+        const panierMessage = document.getElementById("panier-message");
+        if (panierMessage) {
+            panierMessage.textContent = "Votre panier est vide.";
+            panierMessage.style.display = "block";
+        }
         return;
     }
 
@@ -104,28 +139,37 @@ function validerCommande() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content') 
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
         },
         body: JSON.stringify({ produits: panier })
     })
-    .then(res => {
-     res.headers.get('content-type');
-
-        if (!res.ok) {
-            return res.text().then(text => {
-                console.error('Error response:', text);
-                throw new Error(text || 'Erreur lors de la commande');
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(text || "Erreur lors de la commande");
             });
         }
-        return res.json();
+        return response.json();
     })
     .then(data => {
-        alert(data.message);
+        // Display a user-friendly message instead of alert
+        const panierMessage = document.getElementById("panier-message");
+        if (panierMessage) {
+            panierMessage.textContent = data.message || "Commande validée !";
+            panierMessage.style.display = "block";
+        }
         localStorage.removeItem("panier");
         window.location.href = "/checkout";
     })
     .catch(error => {
-        console.error("Erreur détaillée:", error);
-        alert("Une erreur s'est produite lors de la commande: " + error.message);
+        console.error("Erreur:", error);
+        const panierMessage = document.getElementById("panier-message");
+        if (panierMessage) {
+            panierMessage.textContent = `Erreur lors de la commande: ${error.message}`;
+            panierMessage.style.display = "block";
+        }
     });
 }
+
+// Make the function available globally for HTML event handlers
+window.validerCommande = validerCommande;

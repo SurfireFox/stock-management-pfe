@@ -20,29 +20,35 @@
 </head>
 
 <body>
-    <!-- Header Start -->
-    <header class="border-bottom sticky-top start-0 end-0">
-        <section id="header">
-            <a href="#"><img src="" class="logo" alt=""></a>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Stock-Management-MedHK</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+    @guest
+      <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+    @else
+      <li class="nav-item">
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button class="nav-link btn btn-link" type="submit">Logout</button>
+        </form>
+      </li>
+    @endguest
+</ul>
 
-            <div>
-                <ul id="navbar">
-                    <a href="#" id="close"><i class='fa fa-close'></i></a>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/shop">Shop</a></li>
-                    <li><a href="/blog">Blog</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li id="lg-bag"><a href="/panier"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a></li>
-                </ul>
-            </div>
-            <div id="mobile">
-                <a href="cart.html"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
-                <i id="bar" class="fa fa-bars" aria-hidden="true"></i>
-
-            </div>
-        </section>
-    </header>
+      </div>
+    </div>
+  </nav>
     <!-- Header End -->
     <section class="checkout-page py-5 ">
 

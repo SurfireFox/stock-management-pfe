@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Youshop</title>
+    <title>Stock-Management-MedHK</title>
     <link rel="stylesheet" href="./style.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -164,7 +164,7 @@
 
                                         <td>
                                             <a class="text-heading font-semibold">
-                                              <?= $commandee->prixtotal ?> 
+                                              <?= $commandee->prixtotal ?>
                                             </a>
                                         </td>
                                         <td>
@@ -238,7 +238,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <form method="get" action="{{ route('commande.update', ['id' => $commandee->id]) }}"> 
+                  <form method="get" action="{{ route('commande.update', ['id' => $commandee->id]) }}">
                   @csrf
                   <input type="hidden" name="commande_id" value="{{$commandee->id}}" id="commande_id">
                     <div class="mb-3" id="status">
@@ -266,7 +266,7 @@
       function loadStatusData(element) {
             document.getElementById('commande_id').value = element.getAttribute('data-id');
             document.getElementById('status').value = element.getAttribute('data-status');
-           
+
         }
     </script>
 </body>

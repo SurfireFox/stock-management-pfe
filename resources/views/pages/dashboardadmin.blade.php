@@ -1,24 +1,20 @@
-<?php
-
-
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>youshope</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stock-Management-MedHK</title>
     <link rel="stylesheet" href="./style.css">
-    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 
 <body>
-    
     <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
         <!-- Vertical Navbar -->
         <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
@@ -29,7 +25,10 @@
                 </button>
                 <!-- Brand -->
                 <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
-                    <h3 class="text-success"><img src="./img/youdemy-logo.png" width="40"><span class="text-info">YOU</span>shope</h3>
+                    <h3 class="text-success">
+                        <img src="{{ asset('img/logo.png') }}" width="40" />
+                        <span class="text-info">Stock-Management-MedHK</span>
+                    </h3>
                 </a>
                 <!-- User menu (mobile) -->
                 <div class="navbar-user d-lg-none">
@@ -38,7 +37,7 @@
                         <!-- Toggle -->
                         <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="avatar-parent-child">
-                                <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar- rounded-circle">
+                                <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar-rounded-circle" />
                                 <span class="avatar-child avatar-badge bg-success"></span>
                             </div>
                         </a>
@@ -47,7 +46,7 @@
                             <a href="#" class="dropdown-item">Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
                             <a href="#" class="dropdown-item">Billing</a>
-                            <hr class="dropdown-divider">
+                            <hr class="dropdown-divider" />
                             <a href="#" class="dropdown-item">Logout</a>
                         </div>
                     </div>
@@ -57,26 +56,22 @@
                     <!-- Navigation -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active text-warning" aria-current="page" href="/dashbordadmin">
+                            <a class="nav-link active text-warning" aria-current="page" href="{{ url('/dashbordadmin') }}">
                                 <i class="bi bi-house"></i> Dashboard
                             </a>
                         </li>
-      
+
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/produit">
+                            <a class="nav-link" aria-current="page" href="{{ url('/produit') }}">
                                 <i class="bi bi-file-text"></i> produit
                             </a>
                         </li>
-      
-                       
                     </ul>
                     <!-- Divider -->
-                    <hr class="navbar-divider my-5 opacity-20">
-                
+                    <hr class="navbar-divider my-5 opacity-20" />
                     <!-- Push content down -->
                     <div class="mt-auto"></div>
                     <!-- User (md) -->
-
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="#">
@@ -89,7 +84,6 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </nav>
@@ -103,17 +97,15 @@
                             <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                                 <!-- Title -->
                                 <h1 class="h2 mb-0 ls-tight">
-                                    <img src="" width="40"> Welcome Admin
+                                    <img src="" width="40" /> Welcome Admin
                                 </h1>
                             </div>
                             <!-- Actions -->
-                            <div class="col-sm-6 col-12 text-sm-end">
-                             
-                            </div>
+                            <div class="col-sm-6 col-12 text-sm-end"></div>
                         </div>
                         <!-- Nav -->
                         <ul class="nav nav-tabs mt-4 overflow-x border-0">
-                            <li class="nav-item ">
+                            <li class="nav-item">
                                 <a href="#" class="nav-link active">All files</a>
                             </li>
                             <li class="nav-item">
@@ -129,7 +121,6 @@
             <!-- Main -->
             <section class="py-6 bg-surface-secondary">
                 <div class="container-fluid">
-
                     <!-- Card stats -->
                     <div class="row g-6 mb-6">
                         <div class="col-xl-3 col-sm-6 col-12">
@@ -229,8 +220,9 @@
             </section>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <script src="./script.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('script.js') }}"></script>
 </body>
 
 </html>

@@ -7,6 +7,8 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\ProduitDetaiController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 
 
@@ -59,3 +61,11 @@ Route::post('/checkout', [CommandeController::class, 'checkout'])->name('checkou
 //=======================================================//
 Route::get('/commande',[CommandeController::class, 'commande'])->name('commande');
 Route::post('/commande/update/{id}', [CommandeController::class, 'update'])->name('commande.update');
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
