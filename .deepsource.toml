@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DeepSource configuration file
 # Learn how to configure: https://docs.deepsource.com/docs/configuration
 version = 1
@@ -15,3 +16,16 @@ test_patterns = ["**/__tests__/**", "**/*.spec.ts", "**/*.spec.js", "**/*.test.t
 [[analyzers]]
   name = "python"
   enabled = true
+=======
+version = 1
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = ["react"]
+  environment = ["nodejs"]
+
+[[analyzers]]
+name = "php"
+>>>>>>> 2404e18801d4e89561f5f19e220a17646215bcd3
