@@ -83,7 +83,6 @@
             <h3 class="text-xl font-bold text-blue-900 mb-6 flex items-center">
                 <i class="fas fa-user-edit mr-2 text-blue-600"></i> Edit Profile
             </h3>
-
             <form id="profile-form" action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -129,9 +128,10 @@
                 <i class="fas fa-lock mr-2 text-blue-600"></i> Change Password
             </h3>
 
-            {{-- <form action="{{ route('admin.password.update') }}" method="POST">
+            <form action="{{ route('admin.profile.changePassword') }}" method="POST">
                 @csrf
-                @method('PUT') --}}
+                @method('PUT')
+                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
                 <div class="mb-4">
                     <label for="current_password" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
@@ -146,6 +146,7 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
                     <div class="relative">
@@ -159,6 +160,7 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <div class="mb-6">
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
                     <div class="relative">

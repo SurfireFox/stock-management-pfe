@@ -149,4 +149,30 @@ class UserManagementController extends Controller
         // dd($user);
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
+    public function changePassword(Request $request)
+    {
+        // dd($request->all());
+        try {
+
+            $user = User::findOrFail($request->input('user_id'));
+            $validated = $request->validate([
+                'current_password' => 'required',
+                'password' => 'required|confirmed',
+                // 'password_confirmation' => 'required|same:new_password',
+            ]);
+            // (dd$validated);
+                $userData['password'] = Hash::make($validated['password']);
+                // dd($userData);
+                $passwordPassword = $user->update($userData);
+                dd($passwordPassword);
+
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Password not changed',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

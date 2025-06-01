@@ -111,10 +111,11 @@ Route::prefix('admin')->middleware(['auth', 'role:1'])->group(function () {
     Route::view('/history', 'admindashboard.usershistory')->name('history');
     Route::view('/profile', 'admindashboard.profile')->name('profile');
     Route::put('/profile/update', [UserManagementController::class, 'updateProfile'])->name('admin.profile.update');
+    Route::put('/profile', [UserManagementController::class, 'changePassword'])->name('admin.profile.changePassword');
 
     // Admin Orders Management (usersorders)
     // Route::get('/usersorders', [CommandeController::class, 'adminOrders'])->name('admin.orders');
-    // Route::get('/usersorders/{commande}', [CommandeController::class, 'view'])->name('commande.view');
+    // Route::get('/usersorders/{commande}', [CommandeController::cla²&class, 'view'])->name('commande.view');
     // Route::get('/usersorders/{commande}/edit', [CommandeController::class, 'edit'])->name('commande.edit');
     // Route::delete('/usersorders/{commande}', [CommandeController::class, 'destroy'])->name('commande.delete');
 
