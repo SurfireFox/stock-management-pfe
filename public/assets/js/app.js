@@ -31,19 +31,44 @@ document.addEventListener("DOMContentLoaded", () => {
 // Cart Functionality
 // ==============================
 
-// Add product to cart
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const quantiteInput = document.getElementById('quantite');
+    const btnMinus = quantiteInput.previousElementSibling;
+    const btnPlus = quantiteInput.nextElementSibling;
+
+    btnMinus.addEventListener('click', () => {
+      let value = parseInt(quantiteInput.value);
+      if (value > 1) {
+        quantiteInput.value = value - 1;
+      }
+    });
+
+    btnPlus.addEventListener('click', () => {
+      let value = parseInt(quantiteInput.value);
+      quantiteInput.value = value + 1;
+    });
+  });
+
+
+// Add product to cart      
 function ajouterAuPanier(id, name, prix, photo, quantite) {
+    quantite = parseInt(quantite);
+    if (isNaN(quantite) || quantite < 1) {
+        alert("Quantité invalide !");
+        return;
+    }
+
     const produit = {
         id,
         name,
-        prix,
+        prix: parseFloat(prix),
         photo,
-        quantite: parseInt(quantite)
+        quantite
     };
 
     let panier = JSON.parse(localStorage.getItem("panier")) || [];
 
-    // Check if already in cart and update quantity
     const index = panier.findIndex(p => p.id === id);
     if (index !== -1) {
         panier[index].quantite += produit.quantite;
@@ -53,8 +78,11 @@ function ajouterAuPanier(id, name, prix, photo, quantite) {
 
     localStorage.setItem("panier", JSON.stringify(panier));
     alert("Produit ajouté au panier !");
-    afficherPanier();
+    afficherPanier(); // Optional: update cart icon or summary
 }
+
+window.ajouterAuPanier = ajouterAuPanier;
+
 
 // Make the function available globally for HTML event handlers
 window.ajouterAuPanier = ajouterAuPanier;

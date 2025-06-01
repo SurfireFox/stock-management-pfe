@@ -26,7 +26,7 @@ class CommandeController extends Controller
         $lastMonthTotal = Commande::whereMonth('created_at', $lastMonth)->count();
 
         $currentMonthCompleted = Commande::whereMonth('created_at', $currentMonth)
-            ->where('status', 'completed') // Adjust if needed
+            ->where('status', 'completed') 
             ->count();
 
         $lastMonthCompleted = Commande::whereMonth('created_at', $lastMonth)
@@ -42,7 +42,7 @@ class CommandeController extends Controller
             ->count();
 
         $currentMonthCancelled = Commande::whereMonth('created_at', $currentMonth)
-            ->where('status', 'cancelled') // ✅ Make sure 'cancelled' matches your DB value
+            ->where('status', 'cancelled')
             ->count();
 
         $lastMonthCancelled = Commande::whereMonth('created_at', $lastMonth)
@@ -63,7 +63,7 @@ class CommandeController extends Controller
             'pending' => $currentMonthPending,
             'pending_change' => round($pendingChange, 2),
             'cancelled' => $currentMonthCancelled,
-            'cancelled_change' => round($cancelledChange, 2), // ✅ Add this
+            'cancelled_change' => round($cancelledChange, 2),
         ];
 
         return view('admindashboard.usersorders', compact('commandes', 'users', 'stats'));

@@ -68,8 +68,8 @@
           {{-- <p class="text-gray-500 mb-4">produit Code: PRD-{{ $produit->id }}</p> --}}
 
           <div class="flex items-center mb-6">
-            <span class="text-3xl font-bold text-blue-600">${{ $produit->price }}</span>
-            <span class="text-lg text-gray-400 line-through ml-2">${{ number_format($produit->price * 1.2, 2) }}</span>
+            <span class="text-3xl font-bold text-blue-600">${{ $produit->prix }}</span>
+            <span class="text-lg text-gray-400 line-through ml-2">${{ number_format($produit->prix * 1.2, 2) }}</span>
             {{-- <span class="ml-2 bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">20% OFF</span> --}}
           </div>
 
@@ -89,7 +89,7 @@
             </div>
 
             <div class="flex-1">
-              <button onclick="ajouterAuPanier('{{ $produit->id }}', '{{ $produit->name }}', '{{ $produit->price }}', '{{ asset($produit->photo) }}', document.getElementById('quantite').value)"
+              <button onclick="ajouterAuPanier('{{ $produit->id }}', '{{ $produit->name }}',    '{{ $produit->prix }}', '{{ asset($produit->photo) }}', document.getElementById('quantite').value)"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition duration-300 flex items-center justify-center">
                 <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
               </button>
@@ -266,6 +266,40 @@
     </div>
   </footer>
 
-  <script src="{{ asset('assets/js/app.js') }}"></script>
+  {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+  <script>
+function ajouterAuPanier(id, name, prix, photo, quantite) {
+    quantite = parseInt(quantite);
+    if (isNaN(quantite) || quantite < 1) {
+        alert("Quantité invalide !");
+        return;
+    }
+
+    const produit = {
+        id,
+        name,
+        prix: parseFloat(prix),
+        photo,
+        quantite
+    };
+
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+
+    const index = panier.findIndex(p => p.id === id);
+    if (index !== -1) {
+        panier[index].quantite += produit.quantite;
+    } else {
+        panier.push(produit);
+    }
+
+    localStorage.setItem("panier", JSON.stringify(panier));
+    alert("Produit ajouté au panier !");
+    // afficherPanier();
+}
+
+// Make sure the function is available globally
+window.ajouterAuPanier = ajouterAuPanier;
+</script>
+
 </body>
 </html>

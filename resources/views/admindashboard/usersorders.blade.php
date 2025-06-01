@@ -231,7 +231,7 @@
 
     <!-- Pagination -->
     <div class="mt-6">
-        {{-- {{ $commandes->withQueryString()->links() }} --}}
+        {{-- {{ $commandes->withQueryString()->links() }}   --}}
     </div>
 </div>
 
