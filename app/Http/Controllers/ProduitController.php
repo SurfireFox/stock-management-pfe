@@ -8,24 +8,26 @@ use Illuminate\Http\Request;
 
 class ProduitController extends Controller
 {
-    //
 
-    public function home()
-    {
-        $produit = Produit::all();
-        return view('home', compact('produit'));
-    }
     public function show($id)
     {
-        $produit = Produit::findOrFail($id); 
-        return view('produitdetai', compact('produit')); 
+        $produit = Produit::findOrFail($id);
+        return view('produitdetail', compact('produit'));
     }
+
+    //Client-facing shop view
     public function produit()
     {
         $produit = Produit::all();
         $categories = Categorie::all();
-        return view('pages.produit', compact('produit', 'categories'));
+        return view('pages.product', compact('produit', 'categories'));
     }
+    public function adminProduit()
+    {
+        $produit  = Produit::all();
+        return view('admindashboard.products', compact('produit'));
+    }
+
     public function create(Request $request)
     {
         Produit::create([
@@ -36,13 +38,13 @@ class ProduitController extends Controller
             'categorie_id' => $request['categorie_id'],
         ]);
 
-        return redirect()->route('produit');
+        return redirect()->route('createproduit');
     }
     public function delete($id)
     {
         $produit = Produit::find($id);
         $produit->delete();
-        return redirect()->route('produit');
+        return redirect()->route('produit.delete');
     }
     public function update(Request $request)
     {
@@ -54,6 +56,6 @@ class ProduitController extends Controller
             'photo'  => $request->photo,
             'categorie_id' => $request->categorie_id,
         ]);
-        return redirect()->route('produit');
+        return redirect()->route('produit.update');
     }
 }

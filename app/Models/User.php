@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Commande;
 
 class User extends Authenticatable
 {
@@ -22,6 +23,7 @@ class User extends Authenticatable
         'lastname',
         'email',
         'password',
+        'photo',
         'role_id',
     ];
 
@@ -46,16 +48,24 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->hasMany(Role::class , 'role_id');
+        return $this->belongsTo(\App\Models\Role::class, 'role_id', 'id');
     }
+
 
     public function product()
     {
         return $this->belongsTo(Produit::class);
     }
 
-    public function commande()
+    public function commandes()
     {
-        return $this->hasMany(Commande::class);
+        return $this->hasMany(Commande::class, 'client_id');
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+
 }

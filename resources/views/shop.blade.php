@@ -1,158 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stock-Management-MedHK - Shop</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-  <style>
-    body {
-      background-color: #ffffff;
-      color: #002f6c;
-      font-family: Arial, sans-serif;
-    }
-    .navbar, footer {
-      background-color: #002f6c;
-    }
-    .navbar a, footer, footer a {
-      color: white !important;
-    }
-    .btn-primary {
-      background-color: #0056b3;
-      border: none;
-    }
-    .btn-primary:hover {
-      background-color: #004494;
-    }
-    .product-card {
-      border: 1px solid #e0e0e0;
-      padding: 15px;
-      border-radius: 5px;
-      text-align: center;
-    }
-    .product-card img {
-      max-height: 150px;
-      object-fit: cover;
-      margin-bottom: 10px;
-    }
-    footer {
-      padding: 2rem 1rem;
-      margin-top: 3rem;
-      text-align: center;
-    }
-    #page-header {
-      background-color: #e0e0e0;
-      padding: 60px 20px;
-      text-align: center;
-    }
-    #pagination a {
-      margin: 0 5px;
-      padding: 8px 16px;
-      border: 1px solid #0056b3;
-      color: #0056b3;
-      text-decoration: none;
-    }
-    #pagination a:hover {
-      background-color: #0056b3;
-      color: white;
-    }
-    .newsletter {
-      background-color: #f1f1f1;
-      padding: 40px 20px;
-      text-align: center;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
-<body>
+<body class="bg-white text-blue-900 font-sans">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Stock-Managment-MedHK</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-    <li class="nav-item"><a class="nav-link" href="/panier"><i class="fa fa-shopping-bag"></i></a></li>
-    @guest
-      <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-    @else
-      <li class="nav-item">
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button class="nav-link btn btn-link" type="submit">Logout</button>
-        </form>
-      </li>
-    @endguest
-</ul>
-
+  <nav class="bg-blue-900 text-white shadow-md">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="/" class="text-xl font-bold">Stock-Management-MedHK</a>
+        <div class="hidden md:block">
+          <div class="flex space-x-6">
+            <a href="/" class="text-blue-200 hover:text-white transition-colors">Home</a>
+            <a href="/shop" class="text-white font-medium transition-colors">Shop</a>
+            <a href="/about" class="text-blue-200 hover:text-white transition-colors">About</a>
+            <a href="/contact" class="text-blue-200 hover:text-white transition-colors">Contact</a>
+            <a href="/panier" class="text-blue-200 hover:text-white transition-colors">
+              <i class="fa fa-shopping-bag"></i>
+            </a>
+            @guest
+              <a href="{{ route('login') }}" class="text-blue-200 hover:text-white transition-colors">Login</a>
+              <a href="{{ route('register') }}" class="text-blue-200 hover:text-white transition-colors">Register</a>
+            @else
+              <form method="POST" action="{{ route('logout') }}" class="inline">
+                @csrf
+                <button type="submit" class="text-blue-200 hover:text-white transition-colors">Logout</button>
+              </form>
+            @endguest
+          </div>
+        </div>
+        <button class="md:hidden text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
     </div>
   </nav>
 
   <!-- Page Header -->
-  <section id="page-header">
-    <h2>#StayAtHome</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <section class="bg-gradient-to-r from-blue-500 to-blue-700 py-20 text-center text-white">
+        <h2 class="text-4xl font-bold mb-3">#ShopWithUs</h2>
+        <p class="text-blue-100 max-w-lg mx-auto">Discover our latest collection of high-quality produits at unbeatable prices.</p>
+    </section>
+
+
+  <!-- Filter Bar -->
+  <section class="container mx-auto px-4 py-6">
+    <div class="flex flex-wrap justify-between items-center">
+      <div class="mb-4 md:mb-0">
+        <span class="text-gray-600 mr-2">Filter:</span>
+        <select class="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option>All produits</option>
+          <option>New Arrivals</option>
+          <option>Best Sellers</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+        </select>
+      </div>
+      <div class="flex items-center">
+        <span class="text-gray-600 mr-2">View:</span>
+        <button class="p-2 text-blue-600"><i class="fas fa-th-large"></i></button>
+        <button class="p-2 text-gray-400"><i class="fas fa-list"></i></button>
+      </div>
+    </div>
   </section>
 
-  <!-- Products -->
-  <section class="container my-5">
-    <div class="row">
-      <?php foreach ($produit as $produite): ?>
-      <div class="col-md-3">
-        <div class="product-card">
-          <img src="{{ $produite->photo }}" alt="{{ $produite->name }}">
-          <h5>{{ $produite->name }}</h5>
-          <div class="text-warning">
-            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+  <!-- produits -->
+  <section class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @foreach ($produit as $produite)
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <a href="{{ url('/produitdetai/' . $produite->id) }}">
+          <img src="{{ $produite->photo }}" alt="{{ $produite->name }}" class="w-full h-48 object-cover">
+        </a>
+        <div class="p-4">
+          <h3 class="font-semibold text-lg mb-1">{{ $produite->name }}</h3>
+          <div class="flex text-yellow-400 text-sm mb-2">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
           </div>
-          <h4>{{ $produite->prix }}</h4>
-          <a href="{{ url('/produitdetai/' . $produite->id) }}" class="btn btn-primary mt-2">View</a>
+          <div class="flex justify-between items-center">
+            <span class="text-blue-600 font-bold">{{ $produite->price }}</span>
+            <a href="{{ url('/produitdetail/' . $produite->id) }}"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md transition duration-300">
+              View
+            </a>
+          </div>
         </div>
       </div>
-      <?php endforeach; ?>
+      @endforeach
     </div>
   </section>
 
   <!-- Pagination -->
-  <div id="pagination" class="text-center mb-4">
-    <a href="#">1</a>
-    <a href="#">2</a>
-    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+  <div class="flex justify-center items-center space-x-2 my-8">
+    <a href="#" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition-colors">1</a>
+    <a href="#" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition-colors">2</a>
+    <a href="#" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition-colors">
+      <i class="fa fa-long-arrow-right"></i>
+    </a>
   </div>
 
   <!-- Newsletter -->
-  <section class="newsletter">
-    <h4>Sign Up for Newsletters</h4>
-    <p>Get the latest updates and offers</p>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Your email address">
-            <button class="btn btn-primary">Sign Up</button>
-          </div>
-        </div>
+  <section class="bg-gray-100 py-12">
+    <div class="container mx-auto px-4 text-center">
+      <h4 class="text-2xl font-bold mb-2">Sign Up for Newsletters</h4>
+      <p class="text-gray-600 mb-6">Get the latest updates and offers</p>
+      <div class="max-w-md mx-auto flex">
+        <input type="email" placeholder="Your email address"
+          class="flex-1 px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-r-md transition duration-300">
+          Sign Up
+        </button>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer>
+  <footer class="bg-blue-900 text-white py-8 text-center">
     <p>&copy; 2025 Stock-Management-MedHK. All rights reserved.</p>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

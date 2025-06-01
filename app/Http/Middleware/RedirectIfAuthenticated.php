@@ -23,10 +23,17 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // User is authenticated - redirect based on user role
+                if (Auth::user()->role_id == 1) {
+                    return redirect()->route('dashboard'); // Admin dashboard
+                } else if (Auth::user()->role_id == 2) {
+                    return redirect()->route('userdashboard'); // User dashboard
+                }
+                return redirect('/'); // Default redirect to home
             }
         }
 
+        // User is a guest (not authenticated) - allow them to continue to login/register
         return $next($request);
     }
 }

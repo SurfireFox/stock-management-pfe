@@ -4,166 +4,88 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About Us - Stock-Management-MedHK</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #ffffff;
-      color: #002f6c;
-      font-family: Arial, sans-serif;
-    }
-
-    .navbar, footer {
-      background-color: #002f6c;
-    }
-
-    .navbar a, footer, footer a {
-      color: white !important;
-    }
-
-    .hero {
-      background-color: #e6f0ff;
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .bubble-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-      padding: 60px 20px;
-    }
-
-    .bubble {
-      background-color: #f0f8ff;
-      border: 2px solid #0056b3;
-      border-radius: 50%;
-      width: 300px;
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 30px;
-      box-shadow: 0 0 15px rgba(0, 47, 108, 0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .bubble:hover {
-      transform: scale(1.05);
-    }
-
-    .bubble h2 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    .bubble p,
-    .bubble ul {
-      font-size: 1rem;
-    }
-
-    .bubble ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .bubble ul li::before {
-      content: "✔ ";
-      color: #0056b3;
-    }
-
-    footer {
-      padding: 20px;
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .bubble-container {
-        gap: 20px;
-        padding: 30px 10px;
-      }
-
-      .bubble {
-        width: 90%;
-        height: auto;
-        border-radius: 20px;
-        padding: 20px;
-      }
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body>
-
+<body class="bg-white text-blue-900 font-sans">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="/">Stock-Management-MedHK</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
-    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-    @guest
-      <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-    @else
-      <li class="nav-item">
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button class="nav-link btn btn-link" type="submit">Logout</button>
-        </form>
-      </li>
-    @endguest
-</ul>
-
+  <nav class="bg-blue-900 text-white shadow-md">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="/" class="text-xl font-bold">Stock-Management-MedHK</a>
+        <div class="hidden md:block">
+          <div class="flex space-x-6">
+            <a href="/" class="text-blue-200 hover:text-white transition-colors">Home</a>
+            <a href="/shop" class="text-blue-200 hover:text-white transition-colors">Shop</a>
+            <a href="/about" class="text-white font-medium transition-colors">About</a>
+            <a href="/contact" class="text-blue-200 hover:text-white transition-colors">Contact</a>
+            @guest
+              <a href="{{ route('login') }}" class="text-blue-200 hover:text-white transition-colors">Login</a>
+              <a href="{{ route('register') }}" class="text-blue-200 hover:text-white transition-colors">Register</a>
+            @else
+              <form method="POST" action="{{ route('logout') }}" class="inline">
+                @csrf
+                <button type="submit" class="text-blue-200 hover:text-white transition-colors">Logout</button>
+              </form>
+            @endguest
+          </div>
+        </div>
+        <button class="md:hidden text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <div class="hero">
-    <h1>About Stock-Management-MedHK</h1>
-    <p>Your trusted partner for efficient inventory control and product tracking.</p>
-  </div>
-
-  <!-- Bubbles Section -->
-  <div class="bubble-container">
-    <div class="bubble">
-      <div>
-        <h2>Who We Are</h2>
-        <p>We specialize in intuitive and powerful stock management solutions, helping businesses track inventory and reduce waste efficiently.</p>
-      </div>
-    </div>
-    <div class="bubble">
-      <div>
-        <h2>Our Vision</h2>
-        <p>To lead the industry in adaptive, user-focused inventory management through innovation and reliability.</p>
-      </div>
-    </div>
-    <div class="bubble">
-      <div>
-        <h2>Why Choose Us?</h2>
-        <ul>
-          <li>User-friendly interface</li>
-          <li>Real-time inventory monitoring</li>
-          <li>Secure and scalable platform</li>
-          <li>Reliable customer support</li>
-        </ul>
-      </div>
+  <div class="bg-gradient-to-r from-blue-50 to-blue-100 py-20 text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold text-blue-900 mb-4">About Stock-Management-MedHK</h1>
+      <p class="text-xl text-blue-700 max-w-2xl mx-auto">Your trusted partner for efficient inventory control and product tracking.</p>
     </div>
   </div>
 
+  <!-- Features Section -->
+<div class="container mx-auto px-4 py-16">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Who We Are -->
+    <div class="bg-white rounded-xl border-2 border-blue-500 shadow-lg p-6 mx-auto w-full flex flex-col items-center text-center transform transition-transform hover:scale-105 hover:shadow-xl">
+      <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+        <i class="fas fa-users text-blue-600 text-2xl"></i>
+      </div>
+      <h2 class="text-xl font-bold text-blue-900 mb-2">Who We Are</h2>
+      <p class="text-blue-700">We specialize in intuitive and powerful stock management solutions, helping businesses track inventory efficiently.</p>
+    </div>
+
+    <!-- Our Vision -->
+    <div class="bg-white rounded-xl border-2 border-blue-500 shadow-lg p-6 mx-auto w-full flex flex-col items-center text-center transform transition-transform hover:scale-105 hover:shadow-xl">
+      <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+        <i class="fas fa-eye text-blue-600 text-2xl"></i>
+      </div>
+      <h2 class="text-xl font-bold text-blue-900 mb-2">Our Vision</h2>
+      <p class="text-blue-700">To lead the industry in adaptive, user-focused inventory management through innovation and reliability.</p>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="bg-white rounded-xl border-2 border-blue-500 shadow-lg p-6 mx-auto w-full flex flex-col items-center text-center transform transition-transform hover:scale-105 hover:shadow-xl">
+      <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+        <i class="fas fa-check-circle text-blue-600 text-2xl"></i>
+      </div>
+      <h2 class="text-xl font-bold text-blue-900 mb-2">Why Choose Us?</h2>
+      <ul class="text-blue-700 text-sm">
+        <li class="flex items-center justify-center"><i class="fas fa-check text-blue-500 mr-1"></i> User-friendly interface</li>
+        <li class="flex items-center justify-center"><i class="fas fa-check text-blue-500 mr-1"></i> Real-time monitoring</li>
+        <li class="flex items-center justify-center"><i class="fas fa-check text-blue-500 mr-1"></i> Secure platform</li>
+        <li class="flex items-center justify-center"><i class="fas fa-check text-blue-500 mr-1"></i> Reliable support</li>
+      </ul>
+    </div>
+  </div>
+</div>
   <!-- Footer -->
-  <footer>
+  <footer class="bg-blue-900 text-white py-6 text-center">
     <p>&copy; 2025 Stock-Management-MedHK. All rights reserved.</p>
   </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

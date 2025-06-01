@@ -31,3 +31,4 @@ return new class extends Migration
         Schema::dropIfExists('categories');
     }
 };
+// No change needed unless you want to rename the table to 'categories'.

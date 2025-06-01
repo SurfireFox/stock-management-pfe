@@ -5922,10 +5922,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * @private
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function[]|Object[]|string[]} iteratees The iteratees to sort by.
-     * @param {string[]} orders The sort orders of `iteratees`.
+     * @param {string[]} commande The sort commande of `iteratees`.
      * @returns {Array} Returns the new sorted array.
      */
-    function baseOrderBy(collection, iteratees, orders) {
+    function baseOrderBy(collection, iteratees, commande) {
       if (iteratees.length) {
         iteratees = arrayMap(iteratees, function(iteratee) {
           if (isArray(iteratee)) {
@@ -5950,7 +5950,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
       });
 
       return baseSortBy(result, function(object, other) {
-        return compareMultiple(object, other, orders);
+        return compareMultiple(object, other, commande);
       });
     }
 
@@ -6846,31 +6846,31 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * Used by `_.orderBy` to compare multiple properties of a value to another
      * and stable sort them.
      *
-     * If `orders` is unspecified, all values are sorted in ascending order. Otherwise,
+     * If `commande` is unspecified, all values are sorted in ascending order. Otherwise,
      * specify an order of "desc" for descending or "asc" for ascending sort order
      * of corresponding values.
      *
      * @private
      * @param {Object} object The object to compare.
      * @param {Object} other The other object to compare.
-     * @param {boolean[]|string[]} orders The order to sort by for each property.
+     * @param {boolean[]|string[]} commande The order to sort by for each property.
      * @returns {number} Returns the sort order indicator for `object`.
      */
-    function compareMultiple(object, other, orders) {
+    function compareMultiple(object, other, commande) {
       var index = -1,
           objCriteria = object.criteria,
           othCriteria = other.criteria,
           length = objCriteria.length,
-          ordersLength = orders.length;
+          commandeLength = commande.length;
 
       while (++index < length) {
         var result = compareAscending(objCriteria[index], othCriteria[index]);
         if (result) {
-          if (index >= ordersLength) {
+          if (index >= commandeLength) {
             return result;
           }
-          var order = orders[index];
-          return result * (order == 'desc' ? -1 : 1);
+          var commande = commande[index];
+          return result * (commande == 'desc' ? -1 : 1);
         }
       }
       // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
@@ -11789,7 +11789,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
     /**
      * This method is like `_.sortBy` except that it allows specifying the sort
-     * orders of the iteratees to sort by. If `orders` is unspecified, all values
+     * commande of the iteratees to sort by. If `commande` is unspecified, all values
      * are sorted in ascending order. Otherwise, specify an order of "desc" for
      * descending or "asc" for ascending sort order of corresponding values.
      *
@@ -11800,7 +11800,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Array[]|Function[]|Object[]|string[]} [iteratees=[_.identity]]
      *  The iteratees to sort by.
-     * @param {string[]} [orders] The sort orders of `iteratees`.
+     * @param {string[]} [commande] The sort commande of `iteratees`.
      * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
      * @returns {Array} Returns the new sorted array.
      * @example
@@ -11816,18 +11816,18 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * _.orderBy(users, ['user', 'age'], ['asc', 'desc']);
      * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      */
-    function orderBy(collection, iteratees, orders, guard) {
+    function orderBy(collection, iteratees, commande, guard) {
       if (collection == null) {
         return [];
       }
       if (!isArray(iteratees)) {
         iteratees = iteratees == null ? [] : [iteratees];
       }
-      orders = guard ? undefined : orders;
-      if (!isArray(orders)) {
-        orders = orders == null ? [] : [orders];
+      commande = guard ? undefined : commande;
+      if (!isArray(commande)) {
+        commande = commande == null ? [] : [commande];
       }
-      return baseOrderBy(collection, iteratees, orders);
+      return baseOrderBy(collection, iteratees, commande);
     }
 
     /**
@@ -19626,7 +19626,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -19640,20 +19640,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/chunk loaded */
 /******/ 	(() => {
@@ -19686,7 +19686,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			return result;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -19698,12 +19698,12 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -19714,7 +19714,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nmd = (module) => {
@@ -19723,11 +19723,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/jsonp chunk loading */
 /******/ 	(() => {
 /******/ 		// no baseURI
-/******/ 		
+/******/
 /******/ 		// object to store loaded and loading chunks
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
@@ -19735,19 +19735,19 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			"/js/app": 0,
 /******/ 			"css/app": 0
 /******/ 		};
-/******/ 		
+/******/
 /******/ 		// no chunk on demand loading
-/******/ 		
+/******/
 /******/ 		// no prefetching
-/******/ 		
+/******/
 /******/ 		// no preloaded
-/******/ 		
+/******/
 /******/ 		// no HMR
-/******/ 		
+/******/
 /******/ 		// no HMR manifest
-/******/ 		
+/******/
 /******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
-/******/ 		
+/******/
 /******/ 		// install a JSONP callback for chunk loading
 /******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
 /******/ 			var [chunkIds, moreModules, runtime] = data;
@@ -19772,20 +19772,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
-/******/ 		
+/******/
 /******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/css/app.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
-/******/ 	
+/******/
 /******/ })()
 ;

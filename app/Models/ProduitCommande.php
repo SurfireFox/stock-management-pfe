@@ -10,12 +10,12 @@ class ProduitCommande extends Model
     use HasFactory;
 
     protected $fillable = ['produit_id', 'commande_id', 'quantite', 'prix'];
-    
+
     public function produit()
     {
         return $this->belongsTo(Produit::class);
     }
-    
+
     public function commande()
     {
         return $this->belongsTo(Commande::class);

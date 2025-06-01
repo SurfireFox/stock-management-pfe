@@ -1,71 +1,130 @@
 <?php
 
-use App\Http\Controllers\CategorieController;
-use App\Http\Controllers\CommandeController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\ProduitDetaiController;
-use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\{
+    CategorieController,
+    CommandeController,
+    HomeController,
+    ProduitController,
+    ProduitDetailController,
+    ShopController,
+    Auth\LoginController,
+    Auth\RegisterController
+};
+use App\Http\Controllers\Auth\UserManagementController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
-
-
-Route::get('/', function () {
-    return view('home');
-});
-Route::get('shop', function () {
-    return view('shop');
-});
-Route::get('about', function () {
-    return view('about');
-});
-Route::get('contact', function () {
-    return view('contact');
-});
-Route::get('panier', function () {
-    return view('panier');
-});
-Route::get('checkout', function () {
-    return view('checkout');
-});
-
+// Public routes
 Route::get('/', [HomeController::class, 'home']);
+
 Route::get('/shop', [ShopController::class, 'shop']);
-Route::get('/produitdetai/{id}', [ProduitController::class, 'show']);
+Route::get('/produitdetail/{id}', [ProduitController::class, 'show']);
+Route::view('/about', 'about');
+Route::view('/contact', 'contact');
 
+// Guest-only routes (login & registration)
+Route::middleware(['guest', 'preventBack'])->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
 
+// Logout route
+Route::middleware('auth')->post('/logout', [LoginController::class, 'logout'])->name('logout');
 
- //================== §! Product !$ =======================//
-//=======================================================//
-Route::get('/produit',[ProduitController::class, 'produit'])->name('produit');
-Route::post('/produit', [ProduitController::class, 'create'])->name('produit');
-Route::delete('/produit/{id}', [ProduitController::class, 'delete'])->name('produit.delete');
-Route::post('/produit/update/{id}', [ProduitController::class, 'update'])->name('produit.update');
+// Logged-in user routes
+Route::middleware('auth')->group(function () {
+    Route::view('/panier', 'panier');
+    Route::view('/checkout', 'checkout');
+    Route::post('/checkout', [CommandeController::class, 'checkout'])->name('checkout');
+});
 
+// User Dashboard
+Route::middleware(['auth', 'role:2'])->get('/userdashboard', function () {
+    $user = auth()->user();
+    $commands = $user->commandes()->get();
 
-//================== §! categorie !$ ====================//
-//=======================================================//
+    return view('userpages.userdashboard', [
+        'totalcommands' => $commands->count(),
+        'completedcommands' => $commands->where('status', 'completed')->count(),
+        'pendingcommands' => $commands->where('status', 'pending')->count(),
+        'commands' => $commands
+    ]);
+})->name('userdashboard');
 
-Route::get('categorie',[CategorieController::class, 'categorie'])->name('categorie');
-Route::post('/categorie', [CategorieController::class, 'create'])->name('categorie');
-Route::delete('/categorie/{id}', [CategorieController::class, 'delete'])->name('categorie.delete');
-Route::post('/categorie/update/{id}', [CategorieController::class, 'update'])->name('categorie.update');
+// User Profile
+Route::middleware(['auth', 'role:2'])->get('/userprofile', function () {
+    $user = auth()->user();
+    $commands = $user->commandes()->get();
 
+    return view('userpages.userprofile', [
+        'totalOrders' => $commands->count(),
+        'completedOrders' => $commands->where('status', 'completed')->count(),
+        'pendingOrders' => $commands->where('status', 'pending')->count(),
+        'activities' => $user->activities()->latest()->take(5)->get() ?? []
+    ]);
+})->name('userprofile');
 
-//================== §! checkout !$ ====================//
-//=======================================================//
-Route::post('/checkout', [CommandeController::class, 'checkout'])->name('checkout');
-//================== §! commande !$ ====================//
-//=======================================================//
-Route::get('/commande',[CommandeController::class, 'commande'])->name('commande');
-Route::post('/commande/update/{id}', [CommandeController::class, 'update'])->name('commande.update');
+// Admin routes (role = 1)
+Route::prefix('admin')->middleware(['auth', 'role:1'])->group(function () {
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+    // produit Routes
+    Route::get('/dashboard', [ProduitController::class, 'adminproduit'])->name('produits');
+    Route::post('/produit', [ProduitController::class, 'create'])->name('produit.store');
+    Route::delete('/produit/{id}', [ProduitController::class, 'delete'])->name('produit.delete');
+    Route::post('/produit/update/{id}', [ProduitController::class, 'update'])->name('produit.update');
 
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+    // Categorie Routes
+    Route::get('/categorie', [CategorieController::class, 'categorie'])->name('categorie');
+    Route::post('/categorie', [CategorieController::class, 'create'])->name('categorie.store');
+    Route::delete('/categorie/{id}', [CategorieController::class, 'delete'])->name('categorie.delete');
+    Route::post('/categorie/update/{id}', [CategorieController::class, 'update'])->name('categorie.update');
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    // commands
+    Route::get('/commande', [CommandeController::class, 'commande'])->name('commande');
+    Route::post('/commande/update/{id}', [CommandeController::class, 'update'])->name('commande.update');
+    Route::view('/commande/view', [CommandeController::class, 'commande'])->name('commande.view');
+    Route::delete('/usersorders/{id}', [CommandeController::class, 'annulercommande'])->name('commande.delete');
+
+    // produit creation
+    Route::get('/create', function() {
+        $Categories = \App\Models\Categorie::all();
+        return view('admindashboard.productcreation', compact('Categories'));
+    })->name('createproduit');
+    Route::post('/create', [ProduitController::class, 'create'])->name('createproduit');
+
+    // User Management (Controller-based) ✅
+    Route::get('/users', [UserManagementController::class, 'index'])->name('indexusers');
+    Route::get('/users/create', function() {
+        $roles = \App\Models\Role::all();
+        return view('admindashboard.userscreate', compact('roles'));
+    })->name('createusers');
+    Route::post('/users/create', [\App\Http\Controllers\Auth\UserManagementController::class, 'store'])->name('storeusers');
+    Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('editusers');
+    Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('updateusers');
+    Route::delete('/users/{user}/delete', [UserManagementController::class, 'destroy'])->name('destroyusers');
+
+    // Admin profile & history
+    Route::view('/history', 'admindashboard.usershistory')->name('history');
+    Route::view('/profile', 'admindashboard.profile')->name('profile');
+    Route::put('/profile/update', [UserManagementController::class, 'updateProfile'])->name('admin.profile.update');
+
+    // Admin Orders Management (usersorders)
+    // Route::get('/usersorders', [CommandeController::class, 'adminOrders'])->name('admin.orders');
+    // Route::get('/usersorders/{commande}', [CommandeController::class, 'view'])->name('commande.view');
+    // Route::get('/usersorders/{commande}/edit', [CommandeController::class, 'edit'])->name('commande.edit');
+    // Route::delete('/usersorders/{commande}', [CommandeController::class, 'destroy'])->name('commande.delete');
+
+        // Profile view and update
+        Route::get('/profile', function () {
+            $stats = [
+                'products_added' => \App\Models\Produit::count(),
+                'orders_processed' => \App\Models\Commande::where('status', 'completed')->count(),
+                'users_managed' => \App\Models\User::where('role_id', 2)->count()
+            ];
+            return view('admindashboard.profile', compact('stats'));
+        })->name('admin.profile');
+});
