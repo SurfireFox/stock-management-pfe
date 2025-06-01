@@ -153,7 +153,6 @@ class UserManagementController extends Controller
     {
         // dd($request->all());
         try {
-
             $user = User::findOrFail($request->input('user_id'));
             $validated = $request->validate([
                 'current_password' => 'required',
@@ -164,9 +163,7 @@ class UserManagementController extends Controller
                 $userData['password'] = Hash::make($validated['password']);
                 // dd($userData);
                 $passwordPassword = $user->update($userData);
-                dd($passwordPassword);
-
-
+                // dd($passwordPassword);
             return redirect()->back();
         } catch (\Exception $e) {
             return response()->json([

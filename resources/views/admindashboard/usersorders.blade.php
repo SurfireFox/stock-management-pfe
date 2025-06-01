@@ -20,7 +20,7 @@
     <!-- Filters -->
     <div class="mb-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
         <h3 class="text-lg font-semibold text-blue-800 mb-4">Filters</h3>
-        <form action="{{ route('commande') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-5">
+        <form action="{{ route('admin.usersorders') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-5">
             <div>
                 <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1.5">Customer</label>
                 <select id="user_id" name="user_id" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
@@ -198,7 +198,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-3">
-                            <a href="{{ route('commande', $commande->id) }}" class="text-blue-600 hover:text-blue-900 transition duration-150" title="View Details">
+                            <a href="{{ route('admin.usersorders.view', $commande->id) }}" class="text-blue-600 hover:text-blue-900 transition duration-150" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </a>
                             <a href="{{ route('commande.update', $commande->id) }}" class="text-green-600 hover:text-green-900 transition duration-150" title="Edit Order">
@@ -231,7 +231,7 @@
 
     <!-- Pagination -->
     <div class="mt-6">
-        {{ $commandes->withQueryString()->links() }}
+        {{-- {{ $commandes->withQueryString()->links() }} --}}
     </div>
 </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\commande;
 use App\Models\produit;
 use App\Models\produitcommande;
+use App\Models\User;
 use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,57 @@ class CommandeController extends Controller
 
     public function commande()
     {
-        $commande = commande::all();
-        return view('admindashboard.usersorders', compact('commande'));
+        $commandes = Commande::all();
+        $users = User::all();
+
+        $currentMonth = now()->month;
+        $lastMonth = now()->subMonth()->month;
+
+        $currentMonthTotal = Commande::whereMonth('created_at', $currentMonth)->count();
+        $lastMonthTotal = Commande::whereMonth('created_at', $lastMonth)->count();
+
+        $currentMonthCompleted = Commande::whereMonth('created_at', $currentMonth)
+            ->where('status', 'completed') // Adjust if needed
+            ->count();
+
+        $lastMonthCompleted = Commande::whereMonth('created_at', $lastMonth)
+            ->where('status', 'completed')
+            ->count();
+
+        $currentMonthPending = Commande::whereMonth('created_at', $currentMonth)
+            ->where('status', 'pending')
+            ->count();
+
+        $lastMonthPending = Commande::whereMonth('created_at', $lastMonth)
+            ->where('status', 'pending')
+            ->count();
+
+        $currentMonthCancelled = Commande::whereMonth('created_at', $currentMonth)
+            ->where('status', 'cancelled') // ✅ Make sure 'cancelled' matches your DB value
+            ->count();
+
+        $lastMonthCancelled = Commande::whereMonth('created_at', $lastMonth)
+            ->where('status', 'cancelled')
+            ->count();
+
+        // % Changes
+        $totalChange = $lastMonthTotal > 0 ? (($currentMonthTotal - $lastMonthTotal) / $lastMonthTotal) * 100 : 0;
+        $completedChange = $lastMonthCompleted > 0 ? (($currentMonthCompleted - $lastMonthCompleted) / $lastMonthCompleted) * 100 : 0;
+        $pendingChange = $lastMonthPending > 0 ? (($currentMonthPending - $lastMonthPending) / $lastMonthPending) * 100 : 0;
+        $cancelledChange = $lastMonthCancelled > 0 ? (($currentMonthCancelled - $lastMonthCancelled) / $lastMonthCancelled) * 100 : 0;
+
+        $stats = [
+            'total' => $currentMonthTotal,
+            'total_change' => round($totalChange, 2),
+            'completed' => $currentMonthCompleted,
+            'completed_change' => round($completedChange, 2),
+            'pending' => $currentMonthPending,
+            'pending_change' => round($pendingChange, 2),
+            'cancelled' => $currentMonthCancelled,
+            'cancelled_change' => round($cancelledChange, 2), // ✅ Add this
+        ];
+
+        return view('admindashboard.usersorders', compact('commandes', 'users', 'stats'));
     }
 
     public function checkout(Request $request)

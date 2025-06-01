@@ -6,15 +6,12 @@ use App\Http\Controllers\{
     CommandeController,
     HomeController,
     ProduitController,
-    ProduitDetailController,
     ShopController,
     Auth\LoginController,
     Auth\RegisterController
 };
 use App\Http\Controllers\Auth\UserManagementController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
+
 
 // Public routes
 Route::get('/', [HomeController::class, 'home']);
@@ -84,10 +81,13 @@ Route::prefix('admin')->middleware(['auth', 'role:1'])->group(function () {
     Route::post('/categorie/update/{id}', [CategorieController::class, 'update'])->name('categorie.update');
 
     // commands
-    Route::get('/commande', [CommandeController::class, 'commande'])->name('commande');
-    Route::post('/commande/update/{id}', [CommandeController::class, 'update'])->name('commande.update');
-    Route::view('/commande/view', [CommandeController::class, 'commande'])->name('commande.view');
-    Route::delete('/usersorders/{id}', [CommandeController::class, 'annulercommande'])->name('commande.delete');
+    // Route::get('/usersorders', [CommandeController::class, 'commande'])->name('commande');
+    Route::get('/usersorders', function () {
+    return view('admindashboard.usersorders');
+    });
+    Route::get('/usersorders', [CommandeController::class, 'commande'])->name('admin.usersorders');
+    Route::post('/usersorders/update/{id}', [CommandeController::class, 'update'])->name('usersorders.update');
+    Route::delete('/usersorders/{id}', [CommandeController::class, 'annulercommande'])->name('usersorders.delete');
 
     // produit creation
     Route::get('/create', function() {
